@@ -25,11 +25,11 @@ public class ScriptController {
     @PostMapping("/execute")
     public ResponseBody executeScript(@RequestBody String script) {
         ResponseBody response = new ResponseBody();
+        response.setId(UUID.randomUUID().toString());
         Script jScript = new Script();
         jScript.setId(UUID.randomUUID().toString());
         jScript.setScript(script);
-        response.setId(UUID.randomUUID().toString());
-        service.executeSctipr(jScript);
+        service.executeScript(jScript);
         response.setResponseStatus("OK");
         return response;
     }
@@ -39,6 +39,14 @@ public class ScriptController {
         ResponseBody responseBody = new ResponseBody();
         service.removeScript(id);
         return responseBody;
+    }
+
+    @GetMapping("/script/{id}")
+    public ResponseBody getScriptExecutorById(@PathVariable String id) {
+        ResponseBody response = new ResponseBody();
+        response.setId(UUID.randomUUID().toString());
+        response.setContent(service.getById(id));
+        return response;
     }
 
 }

@@ -16,7 +16,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public void executeSctipr(Script script) {
+    public void executeScript(Script script) {
         executorHandler.addAndExecuteScript(script);
     }
 
@@ -26,12 +26,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public String getStatus(String scriptId) {
-        return null;
-    }
-
-    @Override
-    public String getConsoleOutput(String scriptId) {
-        return null;
+    public ScriptExecutor getById(String scriptId) {
+        return executorHandler.getScriptExecutorById(scriptId);
     }
 }
