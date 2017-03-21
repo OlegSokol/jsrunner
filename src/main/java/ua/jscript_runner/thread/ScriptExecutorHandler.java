@@ -35,8 +35,10 @@ public class ScriptExecutorHandler {
     public ScriptExecutor getScriptExecutorById(String scriptId) {
         ScriptExecutor scriptExecutor = null;
         Map<ScriptExecutor, Thread> scriptExecutorThreadMap = threads.get(scriptId);
-        for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
-            scriptExecutor = executor;
+        if (scriptExecutorThreadMap != null) {
+            for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
+                scriptExecutor = executor;
+            }
         }
         return scriptExecutor;
     }
