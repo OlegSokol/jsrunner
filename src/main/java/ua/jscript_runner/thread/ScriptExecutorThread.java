@@ -7,12 +7,14 @@ import javax.script.ScriptEngineManager;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ScriptExecutor implements Runnable {
+public class ScriptExecutorThread implements Runnable {
     private Script script;
     private StringWriter sw = new StringWriter();
     private PrintWriter pw = new PrintWriter(sw);
+    private ScriptEngine engine;
 
-    public ScriptExecutor(Script script) {
+    public ScriptExecutorThread(ScriptEngine engine, Script script) {
+        this.engine = engine;
         this.script = script;
     }
 
@@ -24,8 +26,6 @@ public class ScriptExecutor implements Runnable {
     public void run() {
         try {
             script.setStatus(Constant.STATUS_RUNNING);
-            ScriptEngineManager factory = new ScriptEngineManager();
-            ScriptEngine engine = factory.getEngineByName(Constant.ENGINE);
             engine.getContext().setWriter(pw);
             engine.eval(script.getScript());
             script.setConsoleOutput(sw.getBuffer().toString());
