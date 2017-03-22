@@ -4,15 +4,14 @@ import org.springframework.stereotype.Service;
 import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.thread.ScriptExecutor;
 import ua.jscript_runner.thread.ScriptExecutorHandler;
-import ua.jscript_runner.thread.thread.ScriptExecutorThread;
-import ua.jscript_runner.thread.thread.ScriptExecutorThreadHandler;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
-    @Resource(name = "threadHandler")
+
+    @Resource(name = "${handler}")
     private ScriptExecutorHandler executorHandler;
 
     @Override

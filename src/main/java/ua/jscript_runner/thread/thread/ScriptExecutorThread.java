@@ -1,11 +1,10 @@
 package ua.jscript_runner.thread.thread;
 
 import ua.jscript_runner.entity.Script;
-import ua.jscript_runner.thread.Constant;
+import ua.jscript_runner.Constant;
 import ua.jscript_runner.thread.ScriptExecutor;
 
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -27,13 +26,23 @@ public class ScriptExecutorThread implements ScriptExecutor, Runnable {
     @Override
     public void run() {
         try {
-            script.setStatus(Constant.STATUS_RUNNING);
             engine.getContext().setWriter(pw);
+            script.setStatus(Constant.STATUS_RUNNING);
             engine.eval(script.getScript());
-            script.setConsoleOutput(sw.getBuffer().toString());
             script.setStatus(Constant.STATUS_FINISH);
+            script.setConsoleOutput(sw.getBuffer().toString());
         } catch (Throwable e) {
-            script.setStatus(Constant.STATUS_INTERRUPT);
+            script.setStatus(Constant.STATUS_INTERRUPT + ", cause: " + e);
+            clear();
         }
+    }
+
+    /**
+     * Clear contents of a PrintWriter after writing.
+     * For example after OutOfMemoryError.
+     */
+    private void clear() {
+        pw.flush();
+        sw.getBuffer().setLength(0);
     }
 }

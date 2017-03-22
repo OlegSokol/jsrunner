@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.jscript_runner.Application;
 import ua.jscript_runner.entity.Script;
+import ua.jscript_runner.Constant;
 
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class ScriptServiceTest {
     public void shouldExecuteScript() throws Exception {
         service.executeScript(testScriptForAdd);
         Thread.sleep(500);
-        assertEquals("FINISH", service.getById(testUuidForAdd).getScript().getStatus());
+        assertEquals(Constant.STATUS_FINISH, service.getById(testUuidForAdd).getScript().getStatus());
     }
 
     @Test
