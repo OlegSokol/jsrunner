@@ -2,16 +2,21 @@ package ua.jscript_runner.service;
 
 import org.springframework.stereotype.Service;
 import ua.jscript_runner.entity.Script;
-import ua.jscript_runner.thread.ScriptExecutorThread;
+import ua.jscript_runner.thread.ScriptExecutor;
 import ua.jscript_runner.thread.ScriptExecutorHandler;
+import ua.jscript_runner.thread.thread.ScriptExecutorThread;
+import ua.jscript_runner.thread.thread.ScriptExecutorThreadHandler;
+
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
-    private ScriptExecutorHandler executorHandler = new ScriptExecutorHandler();
+    @Resource(name = "threadHandler")
+    private ScriptExecutorHandler executorHandler;
 
     @Override
-    public List<ScriptExecutorThread> getAll() {
+    public List<ScriptExecutor> getAll() {
         return executorHandler.getAllScriptExecutors();
     }
 
@@ -26,7 +31,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public ScriptExecutorThread getById(String scriptId) {
+    public ScriptExecutor getById(String scriptId) {
         return executorHandler.getScriptExecutorById(scriptId);
     }
 }

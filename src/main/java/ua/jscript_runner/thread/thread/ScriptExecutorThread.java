@@ -1,13 +1,15 @@
-package ua.jscript_runner.thread;
+package ua.jscript_runner.thread.thread;
 
 import ua.jscript_runner.entity.Script;
+import ua.jscript_runner.thread.Constant;
+import ua.jscript_runner.thread.ScriptExecutor;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ScriptExecutorThread implements Runnable {
+public class ScriptExecutorThread implements ScriptExecutor, Runnable {
     private Script script;
     private StringWriter sw = new StringWriter();
     private PrintWriter pw = new PrintWriter(sw);

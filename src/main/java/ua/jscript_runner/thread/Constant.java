@@ -1,8 +1,8 @@
 package ua.jscript_runner.thread;
 
-final class Constant {
-    static final String ENGINE = "nashorn";
-    static final String STATUS_RUNNING = "RUNNING";
-    static final String STATUS_FINISH = "FINISH";
-    static final String STATUS_INTERRUPT = "INTERRUPT";
+public final class Constant {
+    public static final String ENGINE = "nashorn";
+    public static final String STATUS_RUNNING = "RUNNING";
+    public static final String STATUS_FINISH = "FINISH";
+    public static final String STATUS_INTERRUPT = "INTERRUPT";
 }
