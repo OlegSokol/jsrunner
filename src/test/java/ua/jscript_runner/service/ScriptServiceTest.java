@@ -28,7 +28,7 @@ public class ScriptServiceTest {
     private String testScript = "print('test')";
 
     @Before
-    public void before() {
+    public void before() throws Exception {
         testScriptForAdd.setId(testUuidForAdd);
         testScriptForAdd.setScript(testScript);
         testScriptForRemove.setId(testUuidForRemove);

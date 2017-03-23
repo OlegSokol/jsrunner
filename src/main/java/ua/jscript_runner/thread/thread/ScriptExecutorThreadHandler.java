@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.jscript_runner.entity.Script;
+import ua.jscript_runner.exception.FailedCompilationScriptException;
+import ua.jscript_runner.exception.NoSuchScriptException;
+import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.thread.ScriptExecutor;
 import ua.jscript_runner.thread.ScriptExecutorHandler;
 import ua.jscript_runner.util.EngineManager;
@@ -32,29 +35,29 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
     }
 
     @Override
-    public void addAndExecuteScript(Script script) {
+    public void addAndExecuteScript(Script script) throws ScriptServiceException {
         ScriptEngine engine = engineManager.getEngine();
-        if (engineManager.compile(script.getScript(), engine)) {
-            ScriptExecutorThread scriptExecutor = new ScriptExecutorThread(engine, script);
-            Thread thread = new Thread(scriptExecutor);
-            threads.put(script.getId(), Collections.singletonMap(scriptExecutor, thread));
-            thread.start();
-            LOG.debug("New thread" + thread.getName() + "start executing");
+        if (!engineManager.compile(script.getScript(), engine)) {
+            throw new FailedCompilationScriptException();
         }
-        //TODO throw exception
+        ScriptExecutorThread scriptExecutor = new ScriptExecutorThread(engine, script);
+        Thread thread = new Thread(scriptExecutor);
+        threads.put(script.getId(), Collections.singletonMap(scriptExecutor, thread));
+        thread.start();
+        LOG.debug("New thread" + thread.getName() + "start executing");
     }
 
     @Override
-    public void stopExecutorScript(String scriptId) {
+    public void stopExecutorScript(String scriptId) throws ScriptServiceException {
         Map<ScriptExecutorThread, Thread> scriptExecutor = threads.get(scriptId);
-        if (scriptExecutor != null) {
-            for (Thread thread : scriptExecutor.values()) {
-                stopThread(thread);
-            }
-            threads.remove(scriptId);
-            LOG.debug("ScriptExecutor with id: '" + scriptId + "' was removed from handler");
+        if (scriptExecutor == null) {
+            throw new NoSuchScriptException();
         }
-        //TODO throw exception
+        for (Thread thread : scriptExecutor.values()) {
+            stopThread(thread);
+        }
+        threads.remove(scriptId);
+        LOG.debug("ScriptExecutor with id: '" + scriptId + "' was removed from handler");
     }
 
     @Override
