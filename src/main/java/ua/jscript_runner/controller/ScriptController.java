@@ -21,18 +21,22 @@ public class ScriptController {
     private ScriptService service;
 
     @GetMapping("/all")
-    public ResponseEntity<List<ScriptExecutor>> all() {
+    public ResponseEntity<Response> all() {
+        Response responseBody = new Response();
         List<ScriptExecutor> scriptExecutors = service.getAll();
-        return ResponseEntity.accepted().body(scriptExecutors);
+        responseBody.setContent(scriptExecutors);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @PostMapping("/execute")
-    public ResponseEntity<ScriptExecutor> executeScript(@RequestBody String script) throws ScriptServiceException {
+    public ResponseEntity<Response> executeScript(@RequestBody String script) throws ScriptServiceException {
+        Response responseBody = new Response();
         Script jScript = new Script();
         jScript.setId(UUID.randomUUID().toString());
         jScript.setScript(script);
         ScriptExecutor scriptExecutor = service.executeScript(jScript);
-        return ResponseEntity.accepted().body(scriptExecutor);
+        responseBody.setContent(scriptExecutor);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @DeleteMapping("/remove/{id}")
@@ -42,9 +46,11 @@ public class ScriptController {
     }
 
     @GetMapping("/script/{id}")
-    public ResponseEntity<ScriptExecutor> getScriptExecutorById(@PathVariable String id) {
+    public ResponseEntity<Response> getScriptExecutorById(@PathVariable String id) {
+        Response responseBody = new Response();
         ScriptExecutor scriptExecutor = service.getById(id);
-        return ResponseEntity.accepted().body(scriptExecutor);
+        responseBody.setContent(scriptExecutor);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @ExceptionHandler(ScriptServiceException.class)
