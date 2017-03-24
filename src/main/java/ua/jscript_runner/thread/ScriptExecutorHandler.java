@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ScriptExecutorHandler {
     List<ScriptExecutor> getAllScriptExecutors();
-    void addAndExecuteScript(Script script) throws ScriptServiceException;
+    ScriptExecutor addAndExecuteScript(Script script) throws ScriptServiceException;
     void stopExecutorScript(String scriptId) throws ScriptServiceException;
     ScriptExecutor getScriptExecutorById(String scriptId);
 }

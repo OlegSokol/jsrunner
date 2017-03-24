@@ -40,7 +40,6 @@ public class EngineManager {
         try {
             ((Compilable) engine).compile(script);
             LOG.debug("Script compiled successful: \n" + script);
-
             return true;
         } catch (ScriptException e) {
             LOG.warn("Script \"" + script + "\" didn't compile");

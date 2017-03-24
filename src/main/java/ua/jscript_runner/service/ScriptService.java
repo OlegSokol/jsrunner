@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ScriptService {
     List<ScriptExecutor> getAll();
-    void executeScript(Script script) throws ScriptServiceException;
+    ScriptExecutor executeScript(Script script) throws ScriptServiceException;
     void removeScript(String scriptId) throws ScriptServiceException;
     ScriptExecutor getById(String scriptId);
 }

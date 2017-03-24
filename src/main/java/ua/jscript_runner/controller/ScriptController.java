@@ -9,7 +9,9 @@ import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.service.ScriptService;
 import ua.jscript_runner.thread.ScriptExecutor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -25,16 +27,12 @@ public class ScriptController {
     }
 
     @PostMapping("/execute")
-    public ResponseEntity executeScript(@RequestBody String script) {
+    public ResponseEntity<ScriptExecutor> executeScript(@RequestBody String script) throws ScriptServiceException {
         Script jScript = new Script();
         jScript.setId(UUID.randomUUID().toString());
         jScript.setScript(script);
-        try {
-            service.executeScript(jScript);
-        } catch (ScriptServiceException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity(HttpStatus.OK);
+        ScriptExecutor scriptExecutor = service.executeScript(jScript);
+        return ResponseEntity.accepted().body(scriptExecutor);
     }
 
     @DeleteMapping("/remove/{id}")
@@ -50,7 +48,14 @@ public class ScriptController {
     }
 
     @ExceptionHandler(ScriptServiceException.class)
-    public ResponseEntity<?> exceptionHandler(ScriptServiceException e) {
-        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> exceptionHandler(Exception e) {
+        Map<String,String> responseBody = new HashMap<>();
+        if (e instanceof ScriptServiceException) {
+            responseBody.put("code", "400");
+        } else {
+            responseBody.put("code", "500");
+        }
+        responseBody.put("message", e.getMessage());
+        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 }

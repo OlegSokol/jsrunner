@@ -21,8 +21,8 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public void executeScript(Script script) throws ScriptServiceException{
-        executorHandler.addAndExecuteScript(script);
+    public ScriptExecutor executeScript(Script script) throws ScriptServiceException{
+        return executorHandler.addAndExecuteScript(script);
     }
 
     @Override

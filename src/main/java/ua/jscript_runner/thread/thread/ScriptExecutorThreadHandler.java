@@ -21,13 +21,13 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
 
     @Autowired
     private EngineManager engineManager;
-    private Map<String, Map<ScriptExecutorThread, Thread>> threads = new ConcurrentHashMap<>();
+    private Map<String, Map<ScriptExecutor, Thread>> threads = new ConcurrentHashMap<>();
 
     @Override
     public List<ScriptExecutor> getAllScriptExecutors() {
-        List<ScriptExecutorThread> scripts = new ArrayList<>();
-        Collection<Map<ScriptExecutorThread, Thread>> values = threads.values();
-        for (Map<ScriptExecutorThread, Thread> map : values) {
+        List<ScriptExecutor> scripts = new ArrayList<>();
+        Collection<Map<ScriptExecutor, Thread>> values = threads.values();
+        for (Map<ScriptExecutor, Thread> map : values) {
             scripts.addAll(map.keySet());
         }
         LOG.debug("Amount of threads: " + scripts.size() + ", was returned");
@@ -35,7 +35,7 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
     }
 
     @Override
-    public void addAndExecuteScript(Script script) throws ScriptServiceException {
+    public ScriptExecutor addAndExecuteScript(Script script) throws ScriptServiceException {
         ScriptEngine engine = engineManager.getEngine();
         if (!engineManager.compile(script.getScript(), engine)) {
             throw new FailedCompilationScriptException();
@@ -45,11 +45,12 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
         threads.put(script.getId(), Collections.singletonMap(scriptExecutor, thread));
         thread.start();
         LOG.debug("New thread" + thread.getName() + "start executing");
+        return scriptExecutor;
     }
 
     @Override
     public void stopExecutorScript(String scriptId) throws ScriptServiceException {
-        Map<ScriptExecutorThread, Thread> scriptExecutor = threads.get(scriptId);
+        Map<ScriptExecutor, Thread> scriptExecutor = threads.get(scriptId);
         if (scriptExecutor == null) {
             throw new NoSuchScriptException();
         }
@@ -61,11 +62,11 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
     }
 
     @Override
-    public ScriptExecutorThread getScriptExecutorById(String scriptId) {
-        ScriptExecutorThread scriptExecutor = null;
-        Map<ScriptExecutorThread, Thread> scriptExecutorThreadMap = threads.get(scriptId);
+    public ScriptExecutor getScriptExecutorById(String scriptId) {
+        ScriptExecutor scriptExecutor = null;
+        Map<ScriptExecutor, Thread> scriptExecutorThreadMap = threads.get(scriptId);
         if (scriptExecutorThreadMap != null) {
-            for (ScriptExecutorThread executor : scriptExecutorThreadMap.keySet()) {
+            for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
                 scriptExecutor = executor;
             }
         }
