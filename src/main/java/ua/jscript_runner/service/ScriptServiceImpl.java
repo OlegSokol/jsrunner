@@ -31,7 +31,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public ScriptExecutor getById(String scriptId) {
+    public ScriptExecutor getById(String scriptId) throws ScriptServiceException {
         return executorHandler.getScriptExecutorById(scriptId);
     }
 }

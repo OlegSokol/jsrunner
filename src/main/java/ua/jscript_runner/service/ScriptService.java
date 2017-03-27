@@ -41,5 +41,5 @@ public interface ScriptService {
      * @param scriptId specified id.
      * @return script executor.
      */
-    ScriptExecutor getById(String scriptId);
+    ScriptExecutor getById(String scriptId) throws ScriptServiceException;
 }

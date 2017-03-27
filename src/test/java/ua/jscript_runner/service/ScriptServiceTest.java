@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.jscript_runner.Application;
 import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.Constant;
+import ua.jscript_runner.exception.ScriptServiceException;
 
 import java.util.UUID;
 
@@ -56,11 +57,11 @@ public class ScriptServiceTest {
         assertEquals(Constant.STATUS_FINISH, service.getById(testUuidForAdd).getScript().getStatus());
     }
 
-    @Test
+    @Test(expected = ScriptServiceException.class)
     public void shouldRemoveScript() throws Exception {
         service.executeScript(testScriptForRemove);
         service.removeScript(testUuidForRemove);
-        assertNull(service.getById(testUuidForRemove));
+        service.getById(testUuidForRemove);
     }
 
     @Test

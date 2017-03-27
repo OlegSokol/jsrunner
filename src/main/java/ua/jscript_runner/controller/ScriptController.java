@@ -60,7 +60,7 @@ public class ScriptController {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    @ExceptionHandler(ScriptServiceException.class)
+    @ExceptionHandler(Exception.class)
     private ResponseEntity<Object> exceptionHandler(Exception e) {
         Map<String,String> responseBody = new HashMap<>();
         if (e instanceof ScriptServiceException) {

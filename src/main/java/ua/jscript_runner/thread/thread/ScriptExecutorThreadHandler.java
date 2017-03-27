@@ -62,13 +62,14 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
     }
 
     @Override
-    public ScriptExecutor getScriptExecutorById(String scriptId) {
+    public ScriptExecutor getScriptExecutorById(String scriptId) throws ScriptServiceException {
         ScriptExecutor scriptExecutor = null;
         Map<ScriptExecutor, Thread> scriptExecutorThreadMap = threads.get(scriptId);
-        if (scriptExecutorThreadMap != null) {
-            for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
-                scriptExecutor = executor;
-            }
+        if (scriptExecutorThreadMap == null) {
+            throw new NoSuchScriptException();
+        }
+        for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
+            scriptExecutor = executor;
         }
         return scriptExecutor;
     }
