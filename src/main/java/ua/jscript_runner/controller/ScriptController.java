@@ -1,18 +1,18 @@
 package ua.jscript_runner.controller;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.jscript_runner.Constant;
 import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.service.ScriptService;
 import ua.jscript_runner.thread.ScriptExecutor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class ScriptController {
@@ -21,11 +21,16 @@ public class ScriptController {
     private ScriptService service;
 
     @GetMapping("/all")
-    public ResponseEntity<Response> all() {
-        Response responseBody = new Response();
+    public ResponseEntity<List<Response>> all() throws ScriptServiceException {
+        List<Response> scriptResponses = new ArrayList<>();
         List<ScriptExecutor> scriptExecutors = service.getAll();
-        responseBody.setContent(scriptExecutors);
-        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+        for (ScriptExecutor scriptExecutor : scriptExecutors) {
+            Response responseBody = new Response();
+            responseBody.setContent(scriptExecutor);
+            scriptResponses.add(responseBody);
+            setLinks(responseBody, scriptExecutor);
+        }
+        return new ResponseEntity<>(scriptResponses, HttpStatus.OK);
     }
 
     @PostMapping("/execute")
@@ -36,6 +41,7 @@ public class ScriptController {
         jScript.setScript(script);
         ScriptExecutor scriptExecutor = service.executeScript(jScript);
         responseBody.setContent(scriptExecutor);
+        setLinks(responseBody, scriptExecutor);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
@@ -46,22 +52,28 @@ public class ScriptController {
     }
 
     @GetMapping("/script/{id}")
-    public ResponseEntity<Response> getScriptExecutorById(@PathVariable String id) {
+    public ResponseEntity<Response> getScriptExecutorById(@PathVariable String id) throws ScriptServiceException {
         Response responseBody = new Response();
         ScriptExecutor scriptExecutor = service.getById(id);
         responseBody.setContent(scriptExecutor);
+        setLinks(responseBody, scriptExecutor);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @ExceptionHandler(ScriptServiceException.class)
-    public ResponseEntity<Object> exceptionHandler(Exception e) {
+    private ResponseEntity<Object> exceptionHandler(Exception e) {
         Map<String,String> responseBody = new HashMap<>();
         if (e instanceof ScriptServiceException) {
-            responseBody.put("code", "400");
+            responseBody.put("code", Constant.CUSTOMER_SIDE);
         } else {
-            responseBody.put("code", "500");
+            responseBody.put("code", Constant.SERVER_SIDE);
         }
         responseBody.put("message", e.getMessage());
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
+    }
+
+    private void setLinks(Response response, ScriptExecutor scriptExecutor) throws ScriptServiceException {
+        response.add(linkTo(methodOn(ScriptController.class).getScriptExecutorById(scriptExecutor.getScript().getId())).withRel("getScriptById"));
+        response.add(linkTo(methodOn(ScriptController.class).stopAndRemoveScript(scriptExecutor.getScript().getId())).withRel("stopAndRemoveScriptById"));
     }
 }

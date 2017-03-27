@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.jscript_runner.Application;
 
 import javax.script.ScriptEngine;
-import javax.xml.ws.soap.Addressing;
 
 import static org.junit.Assert.*;
 
