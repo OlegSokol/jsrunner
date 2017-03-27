@@ -10,8 +10,14 @@ REST API cover for javax.script.ScriptEngine.
 The application allows to run an java script on server side in separate threads.
 Customer can add an java script(in the body of the request), get console output/status('running', 'finish'), stop execution(for example if an script hang out in the cycle)
 
-User can set the ScriptEngine name(for examle 'nashorn') inside <b>resources/config.properties</b> and thread handler('thread', 'executorservice'(in future))
+User can set the ScriptEngine name(default 'nashorn') inside <b>resources/config.properties</b> and thread handler('thread', 'executorservice'(in the future))
 </p>
+
+How to use:
+1. Add script(method: 'POST', localhost:8080/execute, script: in request body)
+2. Get list of executing or completed scripts(method: 'GET', localhost:8080/all)
+3. Get script and information by specified id(method: 'GET', localhost:8080/script/{id})
+4. Stop executing and remove script by specified id(method: 'DELETE', localhost:8080/remove/{id})
 
 <h4> Technologies</h4>
  <ul>
