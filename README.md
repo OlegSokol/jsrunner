@@ -19,8 +19,8 @@ How to use:
 3. Get script and information by specified id(method: 'GET', localhost:8080/script/{id})
 4. Stop executing and remove script by specified id(method: 'DELETE', localhost:8080/remove/{id})
 
-<img src="https://lh6.googleusercontent.com/JTt3MaD93KThd5NNKMe-bYvLej1uf1DFICe1PtNl1IeAo1pIwTZz4WsaFjh-555RGs7BvbbM2yV3PgA=w1366-h672"/>
-<img src="https://lh3.googleusercontent.com/exDcVkDuDQ1wYollYtCXDCioK6YA1quco82W-QcRuAfjvn5iZ5_0oLlsT00P4_IDLX8LGvyp3FQyV58=w1366-h672" />
+<img src="https://hkar.ru/OpB3"/>
+<img src="https://hkar.ru/OpB4" />
 
 <h4> Technologies</h4>
  <ul>
