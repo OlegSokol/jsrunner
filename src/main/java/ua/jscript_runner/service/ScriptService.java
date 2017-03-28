@@ -22,10 +22,10 @@ public interface ScriptService {
      * Execute specified script.
      *
      * @param script specified script.
-     * @return script executor.
+     * @return script executorservice.
      * @throws ScriptServiceException if compilation failed.
      */
-    ScriptExecutor executeScript(Script script) throws ScriptServiceException;
+    ScriptExecutor executeScript(Script script) throws Exception;
 
     /**
      * Remove specified script by id.
@@ -39,7 +39,7 @@ public interface ScriptService {
      * Get script by id.
      *
      * @param scriptId specified id.
-     * @return script executor.
+     * @return script executorservice.
      */
     ScriptExecutor getById(String scriptId) throws ScriptServiceException;
 }

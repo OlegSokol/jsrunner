@@ -1,9 +1,11 @@
 package ua.jscript_runner.entity;
 
+import ua.jscript_runner.Constant;
+
 public class Script {
     private String id;
     private String script;
-    private String status;
+    private String status = Constant.STATUS_NEW;
     private Object result;
 
     public String getId() {

@@ -26,7 +26,7 @@ public class ScriptController {
         List<ScriptExecutor> scriptExecutors = service.getAll();
         for (ScriptExecutor scriptExecutor : scriptExecutors) {
             Response responseBody = new Response();
-            responseBody.setContent(scriptExecutor);
+            responseBody.setContent(scriptExecutor.getScript());
             scriptResponses.add(responseBody);
             setLinks(responseBody, scriptExecutor);
         }
@@ -34,13 +34,13 @@ public class ScriptController {
     }
 
     @PostMapping("/execute")
-    public ResponseEntity<Response> executeScript(@RequestBody String script) throws ScriptServiceException {
+    public ResponseEntity<Response> executeScript(@RequestBody String script) throws Exception {
         Response responseBody = new Response();
         Script jScript = new Script();
         jScript.setId(UUID.randomUUID().toString());
         jScript.setScript(script);
         ScriptExecutor scriptExecutor = service.executeScript(jScript);
-        responseBody.setContent(scriptExecutor);
+        responseBody.setContent(scriptExecutor.getScript());
         setLinks(responseBody, scriptExecutor);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
@@ -55,7 +55,7 @@ public class ScriptController {
     public ResponseEntity<Response> getScriptExecutorById(@PathVariable String id) throws ScriptServiceException {
         Response responseBody = new Response();
         ScriptExecutor scriptExecutor = service.getById(id);
-        responseBody.setContent(scriptExecutor);
+        responseBody.setContent(scriptExecutor.getScript());
         setLinks(responseBody, scriptExecutor);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }

@@ -4,6 +4,7 @@ import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.ScriptServiceException;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Handler that manage script execution.
@@ -21,24 +22,24 @@ public interface ScriptExecutorHandler {
      * Add and start execute specified script.
      *
      * @param script specified script.
-     * @return script executor.
+     * @return script executorservice.
      * @throws ScriptServiceException if compilation failed.
      */
-    ScriptExecutor addAndExecuteScript(Script script) throws ScriptServiceException;
+    ScriptExecutor addAndExecuteScript(Script script) throws ScriptServiceException, ExecutionException, InterruptedException;
 
     /**
      * Stop execution script by specified id.
      *
      * @param scriptId specified id.
-     * @throws ScriptServiceException if script executor not exist.
+     * @throws ScriptServiceException if script executorservice not exist.
      */
     void stopExecutorScript(String scriptId) throws ScriptServiceException;
 
     /**
-     * Get script executor by specified id.
+     * Get script executorservice by specified id.
      *
      * @param scriptId specified id.
-     * @return script executor.
+     * @return script executorservice.
      */
     ScriptExecutor getScriptExecutorById(String scriptId) throws ScriptServiceException;
 }
