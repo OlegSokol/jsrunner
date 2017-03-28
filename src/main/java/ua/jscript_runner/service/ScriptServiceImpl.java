@@ -8,7 +8,6 @@ import ua.jscript_runner.thread.ScriptExecutorHandler;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {

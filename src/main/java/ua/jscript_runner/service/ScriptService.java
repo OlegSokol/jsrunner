@@ -5,7 +5,6 @@ import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.thread.ScriptExecutor;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Script service.

@@ -4,7 +4,6 @@ import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.ScriptServiceException;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Handler that manage script execution.
