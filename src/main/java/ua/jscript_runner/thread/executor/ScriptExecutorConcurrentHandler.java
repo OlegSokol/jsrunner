@@ -75,11 +75,15 @@ public class ScriptExecutorConcurrentHandler implements ScriptExecutorHandler {
         return scriptExecutor;
     }
 
-    private void stopThread(Thread thread) {
+    private void stopThread(Thread thread) throws ScriptServiceException {
         LOG.debug("Start killing thread " + thread.getName());
-        while (thread.isAlive()) {
-            thread.stop();
+        try {
+            while (thread.isAlive()) {
+                thread.stop();
+            }
+            LOG.debug("Thread " + thread.getName() + " was killed");
+        } catch (Throwable e) {
+            throw new ScriptServiceException(e.toString());
         }
-        LOG.debug("Thread " + thread.getName() + " was killed");
     }
 }

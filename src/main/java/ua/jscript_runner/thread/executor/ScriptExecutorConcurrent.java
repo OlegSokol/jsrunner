@@ -26,7 +26,7 @@ public class ScriptExecutorConcurrent extends ScriptExecutor implements Callable
         } catch (Throwable e) {
             script.setStatus(Constant.STATUS_INTERRUPT + ", cause: " + e);
             clear();
-            throw new ScriptServiceException(e);
+            throw new ScriptServiceException(e.toString());
         }
         return this;
     }
