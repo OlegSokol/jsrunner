@@ -13,4 +13,8 @@ public class ScriptServiceException extends Exception {
     public ScriptServiceException(String msg) {
         super(msg);
     }
+
+    public ScriptServiceException(Throwable throwable) {
+        super(throwable);
+    }
 }

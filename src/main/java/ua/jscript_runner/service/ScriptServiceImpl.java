@@ -8,6 +8,7 @@ import ua.jscript_runner.thread.ScriptExecutorHandler;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ScriptServiceImpl implements ScriptService {
@@ -21,7 +22,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public ScriptExecutor executeScript(Script script) throws ScriptServiceException{
+    public ScriptExecutor executeScript(Script script) throws Exception {
         return executorHandler.addAndExecuteScript(script);
     }
 

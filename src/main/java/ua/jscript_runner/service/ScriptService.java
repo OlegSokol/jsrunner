@@ -5,6 +5,7 @@ import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.thread.ScriptExecutor;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Script service.
@@ -25,7 +26,7 @@ public interface ScriptService {
      * @return script executor.
      * @throws ScriptServiceException if compilation failed.
      */
-    ScriptExecutor executeScript(Script script) throws ScriptServiceException;
+    ScriptExecutor executeScript(Script script) throws Exception;
 
     /**
      * Remove specified script by id.
