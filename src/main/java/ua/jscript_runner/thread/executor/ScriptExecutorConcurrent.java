@@ -9,6 +9,7 @@ import javax.script.ScriptEngine;
 import java.util.concurrent.Callable;
 
 public class ScriptExecutorConcurrent extends ScriptExecutor implements Callable<ScriptExecutor> {
+    private Thread currentThread;
 
     public ScriptExecutorConcurrent(Script script, ScriptEngine engine) {
         this.script = script;
@@ -18,6 +19,7 @@ public class ScriptExecutorConcurrent extends ScriptExecutor implements Callable
     @Override
     public ScriptExecutor call() throws ScriptServiceException {
         try {
+            currentThread = Thread.currentThread();
             engine.getContext().setWriter(pw);
             script.setStatus(Constant.STATUS_RUNNING);
             engine.eval(script.getScript());
@@ -32,6 +34,6 @@ public class ScriptExecutorConcurrent extends ScriptExecutor implements Callable
     }
 
     public Thread getThread() {
-        return Thread.currentThread();
+        return this.currentThread;
     }
 }
