@@ -2,7 +2,6 @@ package ua.jscript_runner.service;
 
 import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.ScriptServiceException;
-import ua.jscript_runner.thread.ScriptExecutor;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public interface ScriptService {
      *
      * @return list of scripts.
      */
-    List<ScriptExecutor> getAll();
+    List<Script> getAll();
 
     /**
      * Execute specified script.
@@ -25,7 +24,7 @@ public interface ScriptService {
      * @return script executorservice.
      * @throws ScriptServiceException if compilation failed.
      */
-    ScriptExecutor executeScript(Script script) throws Exception;
+    Script executeScript(Script script) throws Exception;
 
     /**
      * Remove specified script by id.
@@ -41,5 +40,5 @@ public interface ScriptService {
      * @param scriptId specified id.
      * @return script executorservice.
      */
-    ScriptExecutor getById(String scriptId) throws ScriptServiceException;
+    Script getById(String scriptId) throws ScriptServiceException;
 }

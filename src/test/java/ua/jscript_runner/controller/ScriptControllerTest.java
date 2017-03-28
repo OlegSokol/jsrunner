@@ -13,11 +13,7 @@ import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.FailedCompilationScriptException;
 import ua.jscript_runner.exception.NoSuchScriptException;
 import ua.jscript_runner.service.ScriptService;
-import ua.jscript_runner.thread.ScriptExecutor;
-import ua.jscript_runner.thread.thread.ScriptExecutorThread;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +37,10 @@ public class ScriptControllerTest {
     public void shouldGetAllScripts() throws Exception {
         Script script = new Script();
         script.setScript("print('test')");
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("nashorn");
-        ScriptExecutor scriptExecutor = new ScriptExecutorThread(engine, script);
-        List<ScriptExecutor> scriptExecutors = new ArrayList<>();
-        scriptExecutors.add(scriptExecutor);
+        List<Script> scripts = new ArrayList<>();
+        scripts.add(script);
 
-        given(this.service.getAll()).willReturn(scriptExecutors);
+        given(this.service.getAll()).willReturn(scripts);
         mockMvc.perform(get("/all")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -57,10 +50,7 @@ public class ScriptControllerTest {
     public void shouldStartExecuteScript() throws Exception {
         Script script = new Script();
         script.setScript("print('test')");
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("nashorn");
-        ScriptExecutor scriptExecutor = new ScriptExecutorThread(engine, script);
-        given(this.service.executeScript(any(Script.class))).willReturn(scriptExecutor);
+        given(this.service.executeScript(any(Script.class))).willReturn(script);
         mockMvc.perform(post("/execute")
                 .content("print('test')"))
                 .andExpect(status().isOk());
@@ -92,10 +82,7 @@ public class ScriptControllerTest {
     public void shouldGetScriptById() throws Exception {
         Script script = new Script();
         script.setScript("print('test')");
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("nashorn");
-        ScriptExecutor scriptExecutor = new ScriptExecutorThread(engine, script);
-        given(this.service.getById(testId)).willReturn(scriptExecutor);
+        given(this.service.getById(testId)).willReturn(script);
 
         mockMvc.perform(get("/script/" + testId))
                 .andExpect(status().isOk());

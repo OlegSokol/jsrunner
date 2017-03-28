@@ -54,7 +54,7 @@ public class ScriptServiceTest {
     public void shouldExecuteScript() throws Exception {
         service.executeScript(testScriptForAdd);
         Thread.sleep(500);
-        assertEquals(Constant.STATUS_FINISH, service.getById(testUuidForAdd).getScript().getStatus());
+        assertEquals(Constant.STATUS_FINISH, service.getById(testUuidForAdd).getStatus());
     }
 
     @Test(expected = ScriptServiceException.class)

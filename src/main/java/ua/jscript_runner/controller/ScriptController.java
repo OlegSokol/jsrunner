@@ -10,7 +10,6 @@ import ua.jscript_runner.Constant;
 import ua.jscript_runner.entity.Script;
 import ua.jscript_runner.exception.ScriptServiceException;
 import ua.jscript_runner.service.ScriptService;
-import ua.jscript_runner.thread.ScriptExecutor;
 
 import java.util.*;
 
@@ -23,12 +22,12 @@ public class ScriptController {
     @GetMapping("/all")
     public ResponseEntity<List<Response>> all() throws ScriptServiceException {
         List<Response> scriptResponses = new ArrayList<>();
-        List<ScriptExecutor> scriptExecutors = service.getAll();
-        for (ScriptExecutor scriptExecutor : scriptExecutors) {
+        List<Script> scripts = service.getAll();
+        for (Script script : scripts) {
             Response responseBody = new Response();
-            responseBody.setContent(scriptExecutor.getScript());
+            responseBody.setContent(script);
             scriptResponses.add(responseBody);
-            setLinks(responseBody, scriptExecutor);
+            setLinks(responseBody, script);
         }
         return new ResponseEntity<>(scriptResponses, HttpStatus.OK);
     }
@@ -39,9 +38,9 @@ public class ScriptController {
         Script jScript = new Script();
         jScript.setId(UUID.randomUUID().toString());
         jScript.setScript(script);
-        ScriptExecutor scriptExecutor = service.executeScript(jScript);
-        responseBody.setContent(scriptExecutor.getScript());
-        setLinks(responseBody, scriptExecutor);
+        Script scriptObj = service.executeScript(jScript);
+        responseBody.setContent(scriptObj);
+        setLinks(responseBody, scriptObj);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
@@ -54,9 +53,9 @@ public class ScriptController {
     @GetMapping("/script/{id}")
     public ResponseEntity<Response> getScriptExecutorById(@PathVariable String id) throws ScriptServiceException {
         Response responseBody = new Response();
-        ScriptExecutor scriptExecutor = service.getById(id);
-        responseBody.setContent(scriptExecutor.getScript());
-        setLinks(responseBody, scriptExecutor);
+        Script script = service.getById(id);
+        responseBody.setContent(script);
+        setLinks(responseBody, script);
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
@@ -72,8 +71,8 @@ public class ScriptController {
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
-    private void setLinks(Response response, ScriptExecutor scriptExecutor) throws ScriptServiceException {
-        response.add(linkTo(methodOn(ScriptController.class).getScriptExecutorById(scriptExecutor.getScript().getId())).withRel("getScriptById"));
-        response.add(linkTo(methodOn(ScriptController.class).stopAndRemoveScript(scriptExecutor.getScript().getId())).withRel("stopAndRemoveScriptById"));
+    private void setLinks(Response response, Script script) throws ScriptServiceException {
+        response.add(linkTo(methodOn(ScriptController.class).getScriptExecutorById(script.getId())).withRel("getScriptById"));
+        response.add(linkTo(methodOn(ScriptController.class).stopAndRemoveScript(script.getId())).withRel("stopAndRemoveScriptById"));
     }
 }
