@@ -4,7 +4,7 @@ public class Script {
     private String id;
     private String script;
     private String status;
-    private String consoleOutput;
+    private Object result;
 
     public String getId() {
         return id;
@@ -30,11 +30,11 @@ public class Script {
         this.status = status;
     }
 
-    public String getConsoleOutput() {
-        return consoleOutput;
+    public Object getResult() {
+        return result;
     }
 
-    public void setConsoleOutput(String consoleOutput) {
-        this.consoleOutput = consoleOutput;
+    public void setResult(Object result) {
+        this.result = result;
     }
 }

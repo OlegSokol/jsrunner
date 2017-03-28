@@ -5,6 +5,7 @@ import ua.jscript_runner.Constant;
 import ua.jscript_runner.thread.ScriptExecutor;
 
 import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -26,11 +27,12 @@ public class ScriptExecutorThread implements ScriptExecutor, Runnable {
     @Override
     public void run() {
         try {
+            script.setStatus(Constant.STATUS_NEW);
             engine.getContext().setWriter(pw);
             script.setStatus(Constant.STATUS_RUNNING);
-            engine.eval(script.getScript());
+            Object result = getExecutionResult();
+            script.setResult(result);
             script.setStatus(Constant.STATUS_FINISH);
-            script.setConsoleOutput(sw.getBuffer().toString());
         } catch (Throwable e) {
             script.setStatus(Constant.STATUS_INTERRUPT + ", cause: " + e);
             clear();
@@ -44,5 +46,19 @@ public class ScriptExecutorThread implements ScriptExecutor, Runnable {
     private void clear() {
         pw.flush();
         sw.getBuffer().setLength(0);
+    }
+
+    /**
+     * Get result of script execution.
+     *
+     * @return function result or console output.
+     * @throws ScriptException
+     */
+    private Object getExecutionResult() throws ScriptException {
+        Object functionResult = engine.eval(script.getScript());
+        if (functionResult != null) {
+            return functionResult;
+        }
+        return sw.getBuffer();
     }
 }
