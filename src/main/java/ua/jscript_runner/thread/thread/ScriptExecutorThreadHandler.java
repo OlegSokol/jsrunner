@@ -21,15 +21,12 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
 
     @Autowired
     private EngineManager engineManager;
-    private Map<String, Map<ScriptExecutor, Thread>> threads = new ConcurrentHashMap<>();
+    private Map<String, ScriptExecutorThread> threads = new ConcurrentHashMap<>();
 
     @Override
     public List<ScriptExecutor> getAllScriptExecutors() {
         List<ScriptExecutor> scripts = new ArrayList<>();
-        Collection<Map<ScriptExecutor, Thread>> values = threads.values();
-        for (Map<ScriptExecutor, Thread> map : values) {
-            scripts.addAll(map.keySet());
-        }
+        scripts.addAll(threads.values());
         LOG.debug("Amount of threads: " + scripts.size() + ", was returned");
         return Collections.unmodifiableList(scripts);
     }
@@ -42,34 +39,28 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
         }
         ScriptExecutorThread scriptExecutor = new ScriptExecutorThread(engine, script);
         Thread thread = new Thread(scriptExecutor);
-        threads.put(script.getId(), Collections.singletonMap(scriptExecutor, thread));
         thread.start();
+        threads.put(script.getId(), scriptExecutor);
         LOG.debug("New thread" + thread.getName() + "start executing");
         return scriptExecutor;
     }
 
     @Override
     public void stopExecutorScript(String scriptId) throws ScriptServiceException {
-        Map<ScriptExecutor, Thread> scriptExecutor = threads.get(scriptId);
+        ScriptExecutorThread scriptExecutor = threads.get(scriptId);
         if (scriptExecutor == null) {
             throw new NoSuchScriptException();
         }
-        for (Thread thread : scriptExecutor.values()) {
-            stopThread(thread);
-        }
+        stopThread(scriptExecutor.getThread());
         threads.remove(scriptId);
         LOG.debug("ScriptExecutor with id: '" + scriptId + "' was removed from handler");
     }
 
     @Override
     public ScriptExecutor getScriptExecutorById(String scriptId) throws ScriptServiceException {
-        ScriptExecutor scriptExecutor = null;
-        Map<ScriptExecutor, Thread> scriptExecutorThreadMap = threads.get(scriptId);
-        if (scriptExecutorThreadMap == null) {
+        ScriptExecutor scriptExecutor = threads.get(scriptId);
+        if (scriptExecutor == null) {
             throw new NoSuchScriptException();
-        }
-        for (ScriptExecutor executor : scriptExecutorThreadMap.keySet()) {
-            scriptExecutor = executor;
         }
         return scriptExecutor;
     }
@@ -77,6 +68,7 @@ public class ScriptExecutorThreadHandler implements ScriptExecutorHandler {
     private void stopThread(Thread thread) {
         LOG.debug("Start killing thread " + thread.getName());
         while (thread.isAlive()) {
+            System.out.println(thread.isAlive());
             thread.stop();
         }
         LOG.debug("Thread " + thread.getName() + " was killed");

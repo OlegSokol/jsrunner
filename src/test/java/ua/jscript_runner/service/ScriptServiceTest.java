@@ -60,6 +60,7 @@ public class ScriptServiceTest {
     @Test(expected = ScriptServiceException.class)
     public void shouldRemoveScript() throws Exception {
         service.executeScript(testScriptForRemove);
+        Thread.sleep(100);
         service.removeScript(testUuidForRemove);
         service.getById(testUuidForRemove);
     }

@@ -7,16 +7,22 @@ import ua.jscript_runner.thread.ScriptExecutor;
 import javax.script.ScriptEngine;
 
 public class ScriptExecutorThread extends ScriptExecutor implements Runnable {
+    private Thread currentThread;
 
     public ScriptExecutorThread(ScriptEngine engine, Script script) {
         super.engine = engine;
         this.script = script;
+        engine.getContext().setWriter(pw);
+    }
+
+    public Thread getThread() {
+        return currentThread;
     }
 
     @Override
     public void run() {
         try {
-            engine.getContext().setWriter(pw);
+            currentThread = Thread.currentThread();
             script.setStatus(Constant.STATUS_RUNNING);
             Object result = getExecutionResult();
             script.setResult(result);
