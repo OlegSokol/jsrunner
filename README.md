@@ -1,8 +1,10 @@
 # jsrunner
 
-<div>
+
 <a href="https://travis-ci.org/OlegSokol/jsrunner"><img src="https://travis-ci.org/OlegSokol/jsrunner.svg?branch=master" alt="Build Status" /></a>
-</div>
+<a href="https://codecov.io/gh/OlegSokol/jsrunner"><img src="https://codecov.io/gh/OlegSokol/jsrunner/branch/master/graph/badge.svg"/></a>
+
+
 
 
 <p>
