@@ -1,9 +1,9 @@
 # jsrunner
 
 
-<a href="https://travis-ci.org/OlegSokol/jsrunner"><img src="https://travis-ci.org/OlegSokol/jsrunner.svg?branch=master" alt="Build Status" /></a>
-<a href="https://codecov.io/gh/OlegSokol/jsrunner"><img src="https://codecov.io/gh/OlegSokol/jsrunner/branch/master/graph/badge.svg"/></a>
-<a href="https://www.codacy.com/app/OlegSokol/jsrunner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OlegSokol/jsrunner&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/cb4beafdb010431e96f7472dc1aaeb2b"/></a>
+<a href="https://travis-ci.org/sokolinthesky/jsrunner"><img src="https://travis-ci.org/sokolinthesky/jsrunner.svg?branch=master" alt="Build Status" /></a>
+<a href="https://codecov.io/gh/sokolinthesky/jsrunner"><img src="https://codecov.io/gh/sokolinthesky/jsrunner/branch/master/graph/badge.svg"/></a>
+<a href="https://www.codacy.com/app/sokolinthesky/jsrunner?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OlegSokol/jsrunner&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/cb4beafdb010431e96f7472dc1aaeb2b"/></a>
 
 
 
